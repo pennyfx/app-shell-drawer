@@ -7,18 +7,129 @@
     <link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
 	<link rel="stylesheet" type="text/css" href="../src/main.css"/>
 
-    <script type="text/javascript" src="x-tag-components.js"></script> 
-    <script type="text/javascript" src="../src/main.js"></script>      
+    <script type="text/javascript" src="x-tag-components.js"></script>
+    <script type="text/javascript" src="../src/main.js"></script>
 	<style>
+
+    html, body{
+      height: 100%;
+    }
+    body {
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    x-appbar {
+      font: 2.5rem/3.8rem "MozTT",Sans-serif;
+      color: rgb(255, 255, 255);
+      background-color: orange;
+    }
+
+    x-appbar > div {
+      cursor: pointer;
+    }
+
+    x-appbar > *:before {
+      top: 3px;
+      bottom: 3px;
+    }
+    x-appbar {
+      box-shadow: 0 2px 0px 0 rgba(0,0,0,0.3);
+    }
+
+    section {
+      background-color: #ddd;
+      height: 100%;
+    }
+    aside {
+      background-color: #333;
+      height: 100%;
+    }
+    x-shiftbox{
+      background-color: blue;
+    }
+    x-shiftbox, x-flipbox{
+      height: 100%;
+    }
+    x-shiftbox > aside > * {
+      margin: 0;
+      padding: 0;
+    }
+    x-flipbox{
+      -webkit-perspective: 0;
+    }
 
 	</style>
 </head>
 
 <body>
+      <x-shiftbox>
+        <aside>
+          <!-- Drawer Menu -->
+          <ul>
+            <li>Todo</li>
+            <li>Starred</li>
+            <li>Completed</li>
+          </ul>
+        </aside>
+        <section>
+          <x-appbar>
+            <div class="open-drawer">=</div>
+            <header>Todo</header>
+            <div class="create-item">+</div>
+          </x-appbar>
 
-	<h2>Create a Demo</h2>
-
-
+          <x-flipbox>
+            <section>
+              <!-- Main Content -->
+              <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </section>
+            <section>
+              <!-- New Item Content-->
+              <h2>Create new Element</h2>
+                <button onclick="document.querySelector('x-flipbox').toggle();">OK</button>
+            </section>
+          </x-flipbox>
+        </section>
+      </x-shiftbox>
 </body>
+
+
+<script type="text/javascript">
+
+document.addEventListener('DOMComponentsLoaded', function(){
+
+  xtag.addEvents(document, {
+
+    'click:delegate(div.open-drawer)': function(e) {
+      var sb = document.querySelector('x-shiftbox');
+      if (sb.hasAttribute('open')) {
+        sb.removeAttribute('open');
+      }
+      else {
+        sb.setAttribute('open','');
+      }
+    },
+
+    'click:delegate(div.create-item)': function(e) {
+      var flip = document.querySelector('x-flipbox');
+      flip.toggle();
+    },
+    'click:delegate(x-flipbox)': function(e){
+      console.log("DEBUG", e.target);
+    }
+
+  });
+
+});
+
+</script>
 
 </html>
